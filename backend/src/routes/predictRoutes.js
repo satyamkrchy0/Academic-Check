@@ -4,6 +4,7 @@ const { body } = require('express-validator');
 const requireAuth = require('../middleware/auth');
 const validateRequest = require('../middleware/validateRequest');
 const { createPrediction, listPredictions } = require('../services/predictionService');
+const { predictLimiter } = require('../middleware/rateLimiters');
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ const predictionValidators = [
   body('communicationSkills').isFloat({ min: 0, max: 10 })
 ];
 
-router.post('/', requireAuth, predictionValidators, validateRequest, async (req, res, next) => {
+router.post('/', predictLimiter, requireAuth, predictionValidators, validateRequest, async (req, res, next) => {
   try {
     const prediction = await createPrediction(req.user.sub, req.body);
 
@@ -27,7 +28,7 @@ router.post('/', requireAuth, predictionValidators, validateRequest, async (req,
   }
 });
 
-router.get('/history', requireAuth, async (req, res, next) => {
+router.get('/history', predictLimiter, requireAuth, async (req, res, next) => {
   try {
     const history = await listPredictions(req.user.sub);
     return res.status(200).json({ success: true, data: history });

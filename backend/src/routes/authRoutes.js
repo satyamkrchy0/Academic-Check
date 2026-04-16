@@ -1,15 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const { body } = require('express-validator');
+const { body, matchedData } = require('express-validator');
 
 const User = require('../models/User');
 const validateRequest = require('../middleware/validateRequest');
 const { signToken } = require('../utils/jwt');
+const { authLimiter } = require('../middleware/rateLimiters');
 
 const router = express.Router();
 
 router.post(
   '/register',
+  authLimiter,
   [
     body('name').trim().isLength({ min: 2 }).withMessage('Name is required'),
     body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
@@ -18,7 +20,7 @@ router.post(
   validateRequest,
   async (req, res, next) => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password } = matchedData(req);
       const existing = await User.findOne({ email });
       if (existing) {
         return res.status(409).json({ success: false, message: 'User already exists' });
@@ -45,6 +47,7 @@ router.post(
 
 router.post(
   '/login',
+  authLimiter,
   [
     body('email').isEmail().normalizeEmail().withMessage('Valid email is required'),
     body('password').notEmpty().withMessage('Password is required')
@@ -52,7 +55,7 @@ router.post(
   validateRequest,
   async (req, res, next) => {
     try {
-      const { email, password } = req.body;
+      const { email, password } = matchedData(req);
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(401).json({ success: false, message: 'Invalid credentials' });
