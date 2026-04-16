@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academic Check</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Academic & Employment Potential Evaluator</h1>
+        <p>ANN-powered readiness prediction with live updates</p>
+      </header>
+
+      <section class="card">
+        <h2>Authentication</h2>
+        <form id="auth-form" class="grid-form">
+          <input id="name" type="text" placeholder="Name (for register)" />
+          <input id="email" type="email" placeholder="Email" required />
+          <input id="password" type="password" placeholder="Password" required />
+          <div class="button-row">
+            <button type="button" id="register-btn">Register</button>
+            <button type="button" id="login-btn">Login</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Prediction Inputs</h2>
+        <form id="prediction-form" class="grid-form">
+          <label>Academic score (0-100)<input type="number" id="academicScore" min="0" max="100" required /></label>
+          <label>Skills rating (0-10)<input type="number" id="skillsRating" min="0" max="10" step="0.1" required /></label>
+          <label>Projects count<input type="number" id="projectsCount" min="0" max="20" required /></label>
+          <label>Internship experience (0-5)<input type="number" id="internshipExperience" min="0" max="5" required /></label>
+          <label>Communication skills (0-10)<input type="number" id="communicationSkills" min="0" max="10" step="0.1" required /></label>
+          <button type="submit">Predict</button>
+        </form>
+      </section>
+
+      <section class="card" id="result-card">
+        <h2>Result</h2>
+        <p id="result-text">No prediction yet.</p>
+      </section>
+
+      <section class="card">
+        <h2>Recent Predictions</h2>
+        <ul id="history-list"></ul>
+      </section>
+    </main>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
