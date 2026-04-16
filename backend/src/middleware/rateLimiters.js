@@ -22,7 +22,19 @@ const predictLimiter = rateLimit({
   }
 });
 
+const userLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 40,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many user profile requests. Please try again later.'
+  }
+});
+
 module.exports = {
   authLimiter,
-  predictLimiter
+  predictLimiter,
+  userLimiter
 };

@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const healthRoutes = require('./routes/healthRoutes');
 const authRoutes = require('./routes/authRoutes');
 const predictRoutes = require('./routes/predictRoutes');
+const userRoutes = require('./routes/userRoutes');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
 
@@ -32,6 +33,7 @@ app.use(express.json());
 app.use('/api/v1/health', healthRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/predict', predictRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

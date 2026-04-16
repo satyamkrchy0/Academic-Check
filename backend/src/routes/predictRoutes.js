@@ -1,5 +1,5 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, matchedData } = require('express-validator');
 
 const requireAuth = require('../middleware/auth');
 const validateRequest = require('../middleware/validateRequest');
@@ -9,16 +9,32 @@ const { predictLimiter } = require('../middleware/rateLimiters');
 const router = express.Router();
 
 const predictionValidators = [
-  body('academicScore').isFloat({ min: 0, max: 100 }),
-  body('skillsRating').isFloat({ min: 0, max: 10 }),
-  body('projectsCount').isInt({ min: 0, max: 20 }),
-  body('internshipExperience').isInt({ min: 0, max: 5 }),
-  body('communicationSkills').isFloat({ min: 0, max: 10 })
+  body('academicScore')
+    .isFloat({ min: 0, max: 100 })
+    .withMessage('academicScore must be between 0 and 100')
+    .toFloat(),
+  body('skillsRating')
+    .isFloat({ min: 0, max: 10 })
+    .withMessage('skillsRating must be between 0 and 10')
+    .toFloat(),
+  body('projectsCount')
+    .isInt({ min: 0, max: 20 })
+    .withMessage('projectsCount must be between 0 and 20')
+    .toInt(),
+  body('internshipExperience')
+    .isInt({ min: 0, max: 5 })
+    .withMessage('internshipExperience must be between 0 and 5')
+    .toInt(),
+  body('communicationSkills')
+    .isFloat({ min: 0, max: 10 })
+    .withMessage('communicationSkills must be between 0 and 10')
+    .toFloat()
 ];
 
 router.post('/', predictLimiter, requireAuth, predictionValidators, validateRequest, async (req, res, next) => {
   try {
-    const prediction = await createPrediction(req.user.sub, req.body);
+    const payload = matchedData(req, { locations: ['body'] });
+    const prediction = await createPrediction(req.user.sub, payload);
 
     req.app.get('io')?.to(req.user.sub).emit('prediction:created', prediction);
 

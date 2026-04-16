@@ -57,6 +57,7 @@ Academic-Check/
 
 - Versioned REST API at `/api/v1/...`
 - JWT auth (`/api/v1/auth/register`, `/api/v1/auth/login`)
+- User data endpoints (`GET/PUT /api/v1/users/me`) for profile storage
 - Prediction endpoint (`/api/v1/predict`) + history (`/api/v1/predict/history`)
 - Middleware: `helmet`, `cors`, `morgan`, validation, not-found, error handling.
 - Async/await used consistently.
@@ -73,7 +74,7 @@ Academic-Check/
 
 - Semantic HTML sections and forms.
 - Responsive CSS using Grid/Flex.
-- JS handles DOM updates, event listeners, async Fetch API calls, auth token storage, and live socket events.
+- JS handles DOM updates, event listeners, client-side form validation, async Fetch API calls, auth token storage, profile API integration, and live socket events.
 
 ## 7) API Integration (Node ↔ Python)
 
@@ -128,4 +129,3 @@ npm run dev
 ### Frontend
 
 Open `/home/runner/work/Academic-Check/Academic-Check/frontend/index.html` with a static server.
-

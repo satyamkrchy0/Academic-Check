@@ -40,4 +40,22 @@ describe('POST /api/v1/predict', () => {
     expect(response.body.success).toBe(true);
     expect(response.body.data.employmentProbability).toBe(87);
   });
+
+  it('returns 422 for invalid payload', async () => {
+    const token = jwt.sign({ sub: 'u1', email: 'test@example.com' }, 'test-secret');
+    process.env.JWT_SECRET = 'test-secret';
+
+    const response = await request(app)
+      .post('/api/v1/predict')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        academicScore: 140,
+        skillsRating: 8,
+        projectsCount: 4,
+        internshipExperience: 1,
+        communicationSkills: 8
+      });
+
+    expect(response.statusCode).toBe(422);
+  });
 });
