@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academic Check</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>Academic & Employment Potential Evaluator</h1>
+        <p>ANN-powered readiness prediction with live updates</p>
+        <p id="status-message" class="status-pill">Not authenticated</p>
+      </header>
+
+      <section class="card">
+        <h2>Authentication</h2>
+        <form id="auth-form" class="grid-form" novalidate>
+          <input id="name" type="text" placeholder="Name (for register)" autocomplete="name" />
+          <input id="email" type="email" placeholder="Email" autocomplete="email" required />
+          <input id="password" type="password" placeholder="Password" autocomplete="current-password" required minlength="6" />
+          <p id="auth-error" class="form-error" aria-live="polite"></p>
+          <div class="button-row">
+            <button type="button" id="register-btn">Register</button>
+            <button type="button" id="login-btn">Login</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>User Profile</h2>
+        <form id="profile-form" class="grid-form" novalidate>
+          <input id="phone" type="text" placeholder="Phone" maxlength="20" />
+          <input id="university" type="text" placeholder="University" maxlength="120" />
+          <input id="degree" type="text" placeholder="Degree" maxlength="80" />
+          <input id="graduationYear" type="number" min="2000" max="2100" placeholder="Graduation Year" />
+          <input id="githubUrl" type="url" placeholder="GitHub URL" />
+          <input id="linkedinUrl" type="url" placeholder="LinkedIn URL" />
+          <label class="full-width">About
+            <textarea id="about" rows="3" maxlength="500" placeholder="Short profile summary"></textarea>
+          </label>
+          <p id="profile-error" class="form-error" aria-live="polite"></p>
+          <button id="save-profile-btn" type="submit">Save Profile</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Prediction Inputs</h2>
+        <form id="prediction-form" class="grid-form" novalidate>
+          <label>Academic score (0-100)<input type="number" id="academicScore" min="0" max="100" required /></label>
+          <label>Skills rating (0-10)<input type="number" id="skillsRating" min="0" max="10" step="0.1" required /></label>
+          <label>Projects count<input type="number" id="projectsCount" min="0" max="20" required /></label>
+          <label>Internship experience (0-5)<input type="number" id="internshipExperience" min="0" max="5" required /></label>
+          <label>Communication skills (0-10)<input type="number" id="communicationSkills" min="0" max="10" step="0.1" required /></label>
+          <p id="predict-error" class="form-error" aria-live="polite"></p>
+          <button id="predict-btn" type="submit">Predict</button>
+        </form>
+      </section>
+
+      <section class="card" id="result-card">
+        <h2>Result</h2>
+        <p id="result-text">No prediction yet.</p>
+      </section>
+
+      <section class="card">
+        <h2>Recent Predictions</h2>
+        <ul id="history-list"></ul>
+      </section>
+    </main>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
